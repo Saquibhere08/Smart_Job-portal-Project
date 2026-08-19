@@ -1,0 +1,9 @@
+package demo;
+
+public class UpdateStudent {
+	
+	EntityManagerFactory emf= Persisyence.createEntityManager("Saq");
+	
+	EntityManager em=emf.createEntityManager();
+	EntityTransaction et=em.getTransaction();
+}

@@ -1,0 +1,34 @@
+package org.oneTooneBidirectional.dao;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+
+import org.oneTooneBidirectional.dto.Employee;
+
+
+public class Employeedb {
+	public static void create(Employee employee) {
+		EntityManagerFactory emf=Persistence.createEntityManagerFactory("Saq");
+		EntityManager e=emf.createEntityManager();
+		EntityTransaction et=e.getTransaction();
+		et.begin();
+		e.persist(employee);
+		et.commit();
+	}
+	public static void remove(Employee employee) {
+		EntityManagerFactory emf=Persistence.createEntityManagerFactory("Saq");
+		EntityManager e=emf.createEntityManager();
+		EntityTransaction et=e.getTransaction();
+		et.begin();
+		e.remove(employee);
+		et.commit();
+	}
+	public static void find(int eid) {
+		EntityManagerFactory emf=Persistence.createEntityManagerFactory("Saq");
+		EntityManager e=emf.createEntityManager();
+		Employee employee =e.find(Employee.class, eid);
+		System.out.println(employee);
+	}
+}

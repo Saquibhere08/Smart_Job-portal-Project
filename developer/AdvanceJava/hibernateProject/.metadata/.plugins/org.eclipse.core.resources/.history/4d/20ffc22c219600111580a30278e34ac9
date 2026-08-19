@@ -1,0 +1,8 @@
+package com.learn.hibernate.Demo;
+
+public class Alien {
+	private int aid;
+	private String aname;
+	private String color;
+	
+}

@@ -1,0 +1,11 @@
+package demo;
+
+public class FindBike {
+	public static void main(String[] args) {
+		EntityManagerFactory emf= Persistence.createEntityManagerFactory("Saq");
+		EntityManager em=emf.createEntityManager();
+		
+		Bike b=em.find(Bike.class, 101);
+		System.out.println(b);
+	}
+}

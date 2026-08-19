@@ -1,0 +1,10 @@
+package com.learn.hibernate.Demo;
+
+public class App {
+	public static void main(String[] args) {
+		Alien saquib=new Alien();
+		saquib.setAid(101);
+		saquib.setAname("Saquib");
+		saquib.setColor("Black");
+	}
+}

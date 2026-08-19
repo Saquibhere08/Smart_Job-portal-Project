@@ -1,0 +1,7 @@
+package org.oneTooneBidirectional.dao;
+
+public class Employeedb {
+	public static void main(String[] args) {
+		
+	}
+}

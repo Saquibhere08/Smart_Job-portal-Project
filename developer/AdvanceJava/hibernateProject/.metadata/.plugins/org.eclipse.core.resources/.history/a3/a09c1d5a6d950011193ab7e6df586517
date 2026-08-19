@@ -1,0 +1,10 @@
+package org.oneTooneBidirectional.dto;
+
+import javax.persistence.Entity;
+
+@Entity
+public class Laptop {
+	private int lid;
+	private String model;
+	
+}

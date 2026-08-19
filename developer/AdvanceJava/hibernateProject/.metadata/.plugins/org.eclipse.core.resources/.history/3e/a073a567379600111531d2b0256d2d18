@@ -1,0 +1,30 @@
+package org.oneTooneBidirectional.controller;
+
+import org.oneTooneBidirectional.dao.Employeedb;
+import org.oneTooneBidirectional.dto.Employee;
+import org.oneTooneBidirectional.dto.Laptop;
+
+public class Driver {
+
+    public static void main(String[] args) {
+
+        // Create Laptop
+        Laptop lp = new Laptop();
+        lp.setLid(103);
+        lp.setModel("Asus");
+
+        // Create Employee
+        Employee em = new Employee();
+        em.setEid(103);
+        em.setEname("Kaushik");
+        em.setSal(55000);
+        em.setRole("Full Stack Developer");
+
+        
+        em.setLaptop(lp);
+        lp.setEmployee(em);
+
+        
+        Employeedb.create(em);
+    }
+}

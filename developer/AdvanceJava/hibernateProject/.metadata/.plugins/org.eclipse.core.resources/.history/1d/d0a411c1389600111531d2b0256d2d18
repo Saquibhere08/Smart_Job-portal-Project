@@ -1,0 +1,32 @@
+package org.oneTooneBidirectional.controller;
+
+import org.oneTooneBidirectional.dao.Employeedb;
+import org.oneTooneBidirectional.dto.Employee;
+import org.oneTooneBidirectional.dto.Laptop;
+
+public class Driver {
+
+    public static void main(String[] args) {
+
+        
+        Laptop lp = new Laptop();
+        lp.setLid(101);
+        lp.setModel("Asus");
+
+        
+        Employee em = new Employee();
+        em.setEid(1001);
+        em.setEname("Kaushik");
+        em.setSal(55000);
+        em.setRole("Full Stack Developer");
+
+        //case1: employee -> laptop, laptop -> employee
+        em.setLaptop(lp);
+        lp.setEmployee(em);
+        
+        //case2: employee -> laptop but laptop -> x employee
+        em.setLaptop(lp);
+        
+        Employeedb.create(em);
+    }
+}

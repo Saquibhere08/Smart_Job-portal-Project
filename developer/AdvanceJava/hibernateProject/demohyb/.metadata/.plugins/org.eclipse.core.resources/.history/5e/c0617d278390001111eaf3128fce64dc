@@ -1,0 +1,21 @@
+package demo;
+
+public class UpdateStudent {
+	Student s=new Student();
+	
+	s.setSid(101);
+	s.setName("ram");
+	s.setEmail("ram@gmail.com");
+	s.setPassword("ram@123");
+	s.setAddress("Hyderabad");
+	s.setContact(9101706381L);
+	
+	EntityManagerFactory emf= Persisyence.createEntityManager("Saq");
+	
+	EntityManager em=emf.createEntityManager();
+	EntityTransaction et=em.getTransaction();
+	
+	et.begin();
+	em.merge(s);
+	et.commit();
+}

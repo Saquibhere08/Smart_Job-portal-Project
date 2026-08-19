@@ -1,0 +1,44 @@
+package org.oneTooneBidirectional.dto;
+
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+@Entity
+
+public class Laptop {
+	@Id
+	private int lid;
+	private String model;
+//	@OneToOne(mappedBy = "laptop")
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "eid")
+	private Employee employee;
+	
+	
+	public Employee getEmployee() {
+		return employee;
+	}
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+	public int getLid() {
+		return lid;
+	}
+	public void setLid(int lid) {
+		this.lid = lid;
+	}
+	public String getModel() {
+		return model;
+	}
+	public void setModel(String model) {
+		this.model = model;
+	}
+	
+	
+	
+}

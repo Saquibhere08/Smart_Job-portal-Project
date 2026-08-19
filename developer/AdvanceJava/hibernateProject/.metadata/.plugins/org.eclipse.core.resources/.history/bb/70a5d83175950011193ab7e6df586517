@@ -1,0 +1,12 @@
+package org.oneTooneBidirectional.dao;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+public class Employeedb {
+	EntityManagerFactory emf=Persistence.createEntityManagerFactory("Saq");
+	
+	public static void create() {
+		
+	}
+}

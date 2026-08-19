@@ -1,0 +1,7 @@
+package org.oneTooneBidirectional.dto;
+
+@Entity
+public class Employee {
+	@Id
+	
+}
