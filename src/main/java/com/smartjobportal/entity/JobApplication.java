@@ -2,8 +2,6 @@ package com.smartjobportal.entity;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "job_applications")
 public class JobApplication {
@@ -12,17 +10,11 @@ public class JobApplication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Long userId;
 
-    @ManyToOne
-    @JoinColumn(name = "job_id", nullable = false)
-    private Job job;
+    private Long jobId;
 
     private String status;
-
-    private LocalDateTime appliedDate;
 
     public JobApplication() {
     }
@@ -35,20 +27,20 @@ public class JobApplication {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public Job getJob() {
-        return job;
+    public Long getJobId() {
+        return jobId;
     }
 
-    public void setJob(Job job) {
-        this.job = job;
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
     }
 
     public String getStatus() {
@@ -57,13 +49,5 @@ public class JobApplication {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public LocalDateTime getAppliedDate() {
-        return appliedDate;
-    }
-
-    public void setAppliedDate(LocalDateTime appliedDate) {
-        this.appliedDate = appliedDate;
     }
 }

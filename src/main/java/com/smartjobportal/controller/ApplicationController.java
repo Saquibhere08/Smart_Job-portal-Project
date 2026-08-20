@@ -1,8 +1,9 @@
 package com.smartjobportal.controller;
 
-import com.smartjobportal.dto.ApplicationRequest;
+import com.smartjobportal.dto.JobApplicationRequest;
 import com.smartjobportal.entity.JobApplication;
 import com.smartjobportal.service.ApplicationService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,40 +14,70 @@ public class ApplicationController {
 
     private final ApplicationService applicationService;
 
-    public ApplicationController(ApplicationService applicationService) {
+    public ApplicationController(
+            ApplicationService applicationService) {
+
         this.applicationService = applicationService;
     }
 
     // Apply for a job
     @PostMapping
-    public JobApplication applyForJob(
-            @RequestBody ApplicationRequest request) {
+    public ResponseEntity<JobApplication> applyForJob(
+            @RequestBody JobApplicationRequest request) {
 
-        return applicationService.applyForJob(request);
+        return ResponseEntity.ok(
+                applicationService.applyForJob(request)
+        );
     }
 
     // Get all applications
     @GetMapping
-    public List<JobApplication> getAllApplications() {
+    public ResponseEntity<List<JobApplication>> getAllApplications() {
 
-        return applicationService.getAllApplications();
+        return ResponseEntity.ok(
+                applicationService.getAllApplications()
+        );
     }
 
     // Get application by ID
     @GetMapping("/{id}")
-    public JobApplication getApplicationById(
+    public ResponseEntity<JobApplication> getApplicationById(
             @PathVariable Long id) {
 
-        return applicationService.getApplicationById(id);
+        return ResponseEntity.ok(
+                applicationService.getApplicationById(id)
+        );
+    }
+
+    // Get applications by user
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<JobApplication>> getApplicationsByUser(
+            @PathVariable Long userId) {
+
+        return ResponseEntity.ok(
+                applicationService.getApplicationsByUser(userId)
+        );
+    }
+
+    // Get applications by job
+    @GetMapping("/job/{jobId}")
+    public ResponseEntity<List<JobApplication>> getApplicationsByJob(
+            @PathVariable Long jobId) {
+
+        return ResponseEntity.ok(
+                applicationService.getApplicationsByJob(jobId)
+        );
     }
 
     // Delete application
     @DeleteMapping("/{id}")
-    public String deleteApplication(
+    public ResponseEntity<String> deleteApplication(
             @PathVariable Long id) {
 
         applicationService.deleteApplication(id);
 
-        return "Application deleted successfully";
+        return ResponseEntity.ok(
+                "Application deleted successfully"
+        );
     }
 }
