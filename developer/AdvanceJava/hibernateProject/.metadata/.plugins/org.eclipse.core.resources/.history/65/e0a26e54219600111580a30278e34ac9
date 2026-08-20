@@ -1,7 +1,0 @@
-package com.learn.hibernate.Demo;
-
-public class App {
-	public static void main(String[] args) {
-		Alien saquib=new Alien();
-	}
-}

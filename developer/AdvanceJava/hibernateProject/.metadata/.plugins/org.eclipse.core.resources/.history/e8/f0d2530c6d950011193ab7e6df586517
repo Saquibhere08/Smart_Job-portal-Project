@@ -1,8 +1,0 @@
-package org.oneTooneBidirectional.dto;
-
-import javax.persistence.Entity;
-
-@Entity
-public class Laptop {
-	
-}

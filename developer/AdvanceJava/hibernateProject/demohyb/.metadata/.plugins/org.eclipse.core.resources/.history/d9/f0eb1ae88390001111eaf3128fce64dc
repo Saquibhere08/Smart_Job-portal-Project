@@ -1,7 +1,0 @@
-package demo;
-
-public class DeleteStudent {
-	public static void main(String[] args) {
-		
-	}
-}

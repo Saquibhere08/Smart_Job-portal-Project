@@ -1,7 +1,0 @@
-package demo;
-
-public class UpdateBike {
-	public static void main(String[] args) {
-		
-	}
-}
