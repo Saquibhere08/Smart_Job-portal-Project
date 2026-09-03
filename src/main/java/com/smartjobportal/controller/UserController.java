@@ -3,7 +3,7 @@ package com.smartjobportal.controller;
 import com.smartjobportal.dto.UserRequest;
 import com.smartjobportal.entity.User;
 import com.smartjobportal.service.UserService;
-
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,42 +19,36 @@ public class UserController {
         this.userService = userService;
     }
 
-    // REGISTER USER
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(
-            @RequestBody UserRequest request) {
+            @Valid @RequestBody UserRequest request) {
 
         User user = userService.registerUser(request);
-
         return ResponseEntity.ok(user);
     }
 
-    // GET ALL USERS
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
-
-        List<User> users = userService.getAllUsers();
-
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    // GET USER BY ID
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(
-            @PathVariable Long id) {
-
-        User user = userService.getUserById(id);
-
-        return ResponseEntity.ok(user);
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    // DELETE USER
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(
+            @PathVariable Long id,
+            @Valid @RequestBody UserRequest request) {
+
+        User updatedUser = userService.updateUser(id, request);
+        return ResponseEntity.ok(updatedUser);
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(
-            @PathVariable Long id) {
-
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-
         return ResponseEntity.ok("User deleted successfully");
     }
 }

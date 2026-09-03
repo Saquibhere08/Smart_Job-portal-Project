@@ -4,6 +4,7 @@ import com.smartjobportal.dto.UserRequest;
 import com.smartjobportal.entity.User;
 import com.smartjobportal.repository.UserRepository;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +13,12 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // REGISTER
@@ -28,7 +32,12 @@ public class UserService {
 
         user.setName(request.getName());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+
+        // Encrypt password before saving
+        user.setPassword(
+                passwordEncoder.encode(request.getPassword())
+        );
+
         user.setPhone(request.getPhone());
         user.setRole(request.getRole());
 
@@ -46,14 +55,41 @@ public class UserService {
 
         return userRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found with id: " + id));
+                        new RuntimeException(
+                                "User not found with id: " + id
+                        ));
+    }
+
+    // UPDATE USER
+    public User updateUser(Long id, UserRequest request) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "User not found with id: " + id
+                        ));
+
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+
+        // Encrypt new password before saving
+        user.setPassword(
+                passwordEncoder.encode(request.getPassword())
+        );
+
+        user.setPhone(request.getPhone());
+        user.setRole(request.getRole());
+
+        return userRepository.save(user);
     }
 
     // DELETE USER
     public void deleteUser(Long id) {
 
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("User not found with id: " + id);
+            throw new RuntimeException(
+                    "User not found with id: " + id
+            );
         }
 
         userRepository.deleteById(id);
