@@ -6,6 +6,8 @@ import com.smartjobportal.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.smartjobportal.dto.LoginRequest;
+import com.smartjobportal.dto.LoginResponse;
 
 import java.util.List;
 
@@ -50,5 +52,14 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully");
+    }
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> loginUser(
+            @Valid @RequestBody LoginRequest request) {
+
+        LoginResponse response =
+                userService.loginUser(request);
+
+        return ResponseEntity.ok(response);
     }
 }
