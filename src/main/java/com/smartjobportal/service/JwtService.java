@@ -13,39 +13,42 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private final String SECRET_KEY =
-            "smart-job-portal-secret-key-for-jwt-authentication-2026";
+    /*
+     * Keep this key at least 32 characters long.
+     *
+     * For a real production application,
+     * store this in an environment variable.
+     */
+    private static final String SECRET_KEY =
+            "SmartJobPortalSecretKeyForJWTAuthentication2026";
 
-    private final SecretKey key =
-            Keys.hmacShaKeyFor(
-                    SECRET_KEY.getBytes(StandardCharsets.UTF_8)
-            );
+    private static final long EXPIRATION_TIME =
+            1000 * 60 * 60; // 1 hour
 
-    // =========================
+    private SecretKey getSigningKey() {
+
+        return Keys.hmacShaKeyFor(
+                SECRET_KEY.getBytes(StandardCharsets.UTF_8)
+        );
+    }
+
     // GENERATE JWT TOKEN
-    // =========================
-
     public String generateToken(String email) {
 
-        long expirationTime = 1000 * 60 * 60; // 1 hour
+        Date now = new Date();
+
+        Date expiryDate =
+                new Date(now.getTime() + EXPIRATION_TIME);
 
         return Jwts.builder()
                 .subject(email)
-                .issuedAt(new Date())
-                .expiration(
-                        new Date(
-                                System.currentTimeMillis()
-                                        + expirationTime
-                        )
-                )
-                .signWith(key)
+                .issuedAt(now)
+                .expiration(expiryDate)
+                .signWith(getSigningKey())
                 .compact();
     }
 
-    // =========================
     // EXTRACT EMAIL
-    // =========================
-
     public String extractEmail(String token) {
 
         return extractClaim(
@@ -54,36 +57,36 @@ public class JwtService {
         );
     }
 
-    // =========================
     // EXTRACT CLAIM
-    // =========================
-
     public <T> T extractClaim(
             String token,
             Function<Claims, T> claimsResolver) {
 
-        final Claims claims = extractAllClaims(token);
+        Claims claims = extractAllClaims(token);
 
         return claimsResolver.apply(claims);
     }
 
-    // =========================
     // EXTRACT ALL CLAIMS
-    // =========================
-
     private Claims extractAllClaims(String token) {
 
         return Jwts.parser()
-                .verifyWith(key)
+                .verifyWith(getSigningKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
     }
 
-    // =========================
-    // VALIDATE TOKEN
-    // =========================
+    // CHECK TOKEN EXPIRATION
+    public boolean isTokenExpired(String token) {
 
+        Date expiration =
+                extractClaim(token, Claims::getExpiration);
+
+        return expiration.before(new Date());
+    }
+
+    // VALIDATE TOKEN
     public boolean isTokenValid(
             String token,
             String email) {
@@ -100,20 +103,5 @@ public class JwtService {
 
             return false;
         }
-    }
-
-    // =========================
-    // CHECK TOKEN EXPIRATION
-    // =========================
-
-    private boolean isTokenExpired(String token) {
-
-        Date expiration =
-                extractClaim(
-                        token,
-                        Claims::getExpiration
-                );
-
-        return expiration.before(new Date());
     }
 }

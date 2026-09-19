@@ -1,13 +1,17 @@
 package com.smartjobportal.controller;
 
-import com.smartjobportal.dto.UserRequest;
-import com.smartjobportal.entity.User;
-import com.smartjobportal.service.UserService;
-import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import com.smartjobportal.dto.LoginRequest;
 import com.smartjobportal.dto.LoginResponse;
+import com.smartjobportal.dto.UserRequest;
+import com.smartjobportal.dto.UserResponse;
+import com.smartjobportal.service.UserService;
+
+import jakarta.validation.Valid;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,38 +25,26 @@ public class UserController {
         this.userService = userService;
     }
 
+    // ==========================================
+    // REGISTER USER
+    // ==========================================
+
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(
+    public ResponseEntity<UserResponse> registerUser(
             @Valid @RequestBody UserRequest request) {
 
-        User user = userService.registerUser(request);
-        return ResponseEntity.ok(user);
+        UserResponse response =
+                userService.registerUser(request);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
-    }
+    // ==========================================
+    // LOGIN USER
+    // ==========================================
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(
-            @PathVariable Long id,
-            @Valid @RequestBody UserRequest request) {
-
-        User updatedUser = userService.updateUser(id, request);
-        return ResponseEntity.ok(updatedUser);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.ok("User deleted successfully");
-    }
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(
             @Valid @RequestBody LoginRequest request) {
@@ -61,5 +53,60 @@ public class UserController {
                 userService.loginUser(request);
 
         return ResponseEntity.ok(response);
+    }
+
+    // ==========================================
+    // GET ALL USERS
+    // ==========================================
+
+    @GetMapping
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+
+        return ResponseEntity.ok(
+                userService.getAllUsers()
+        );
+    }
+
+    // ==========================================
+    // GET USER BY ID
+    // ==========================================
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> getUserById(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                userService.getUserById(id)
+        );
+    }
+
+    // ==========================================
+    // UPDATE USER
+    // ==========================================
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponse> updateUser(
+            @PathVariable Long id,
+            @Valid @RequestBody UserRequest request) {
+
+        UserResponse response =
+                userService.updateUser(id, request);
+
+        return ResponseEntity.ok(response);
+    }
+
+    // ==========================================
+    // DELETE USER
+    // ==========================================
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(
+            @PathVariable Long id) {
+
+        userService.deleteUser(id);
+
+        return ResponseEntity.ok(
+                "User deleted successfully"
+        );
     }
 }
